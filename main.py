@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+#Load the documentation localized in the documents directory
 def load_documentation(docs_path):
     if not os.path.exists(docs_path):
         raise FileNotFoundError(f"The directory path {docs_path} does not exists.")
@@ -35,6 +36,7 @@ def load_documentation(docs_path):
     return documents
 
 
+#Split the documents in various chunks
 def split_documents(documents, chunk_size=800, chunk_overlap=0):
     text_splitter = CharacterTextSplitter(
         chunk_size = chunk_size,
@@ -56,6 +58,7 @@ def split_documents(documents, chunk_size=800, chunk_overlap=0):
     return chunks
 
 
+#Embed the documents chunks and store them in the vector DB
 def embedding_and_vector_db(chunks, persist_directory="db/chroma_db"):
     embedding_model = OpenAIEmbeddings(model="text-embedding-3-small")
 
@@ -66,8 +69,6 @@ def embedding_and_vector_db(chunks, persist_directory="db/chroma_db"):
         collection_metadata={'hnsw:space':'cosine'}
     )
 
-    return vector_db
-
 
 def main():
     #Load Documents
@@ -77,7 +78,7 @@ def main():
     chunks = split_documents(documents)
 
     #embedding and create vector DB
-    vector_db = embedding_and_vector_db(chunks)
+    embedding_and_vector_db(chunks)
 
 
 if __name__ == "__main__":

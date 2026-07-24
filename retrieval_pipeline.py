@@ -10,6 +10,7 @@ from langchain_core.messages import HumanMessage, SystemMessage
 
 load_dotenv()
 
+#Shows the cos_sim value from the most relevants chunks
 def cosine_similarity(revelant_chunks, query_embed, embedding_model=OpenAIEmbeddings(model="text-embedding-3-small")):
     text_chunks = [chunk.page_content for chunk in revelant_chunks]
 
@@ -23,6 +24,7 @@ def cosine_similarity(revelant_chunks, query_embed, embedding_model=OpenAIEmbedd
     print(cos_sim)
 
 
+#The retrieval procedure to search the best chunks for the user's query
 def retrieval_procedure(query, persistent_dir = 'db/chroma_db'):
 
     embedding_model = OpenAIEmbeddings(model="text-embedding-3-small")
