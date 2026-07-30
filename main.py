@@ -1,6 +1,6 @@
 import os
 from langchain_community.document_loaders import Docx2txtLoader, DirectoryLoader #Read the documents from a dir
-from langchain_text_splitters import CharacterTextSplitter #Used for create chunks
+from langchain_text_splitters import CharacterTextSplitter, RecursiveCharacterTextSplitter #Used for create chunks
 from langchain_openai import OpenAIEmbeddings #Embedding Model
 from langchain_chroma import Chroma #Vector DB that runs locally
 from dotenv import load_dotenv
@@ -38,10 +38,16 @@ def load_documentation(docs_path):
 
 #Split the documents in various chunks
 def split_documents(documents, chunk_size=800, chunk_overlap=0):
-    text_splitter = CharacterTextSplitter(
+    """text_splitter = CharacterTextSplitter(
         chunk_size = chunk_size,
         chunk_overlap = chunk_overlap
-    )
+    )"""
+
+    text_splitter = RecursiveCharacterTextSplitter(
+            separators=['\n\n', '\n', '. ', '.', ' ', ''],
+            chunk_size = chunk_size,
+            chunk_overlap = chunk_overlap
+        )
 
     chunks = text_splitter.split_documents(documents)
 
